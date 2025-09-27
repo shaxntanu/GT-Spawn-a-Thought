@@ -30,29 +30,6 @@
             }
         }
 
-        .pixel {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: white;
-            opacity: 0.6;
-            z-index: 1;
-            border-radius: 50%;
-            animation: twinkle 3s infinite alternate;
-        }
-
-        @keyframes twinkle {
-            from {
-                opacity: 0.2;
-                transform: scale(1);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1.5);
-            }
-        }
-
         body {
             margin: 0;
             padding: 0;
@@ -67,6 +44,18 @@
             text-align: center;
             background-image: radial-gradient(#FFFFFF0D 1px, transparent 1px);
             background-size: 108px 200px;
+        }
+
+        /* Fade in animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.show {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         h1 {
@@ -124,15 +113,15 @@
 </head>
 
 <body>
-    <h1>Glyph Thoughts</h1>
+    <h1 class="fade-in" id="title">Glyph Thoughts</h1>
     <div id="quote"></div>
-    <button id="quoteBtn">Spawn a Thought</button>
+    <button id="quoteBtn" class="fade-in">Spawn a Thought</button>
 
-    <div id="musicBy">Music By: diedlonely</div>
+    <div id="musicBy" class="fade-in">Music By: diedlonely</div>
     <audio id="backgroundMusic" loop>
         <source src="music.mp3" type="audio/mpeg" />
     </audio>
-    <div id="madeBy">Made By: Shantanu</div>
+    <div id="madeBy" class="fade-in">Made By: Shantanu</div>
 
 
     <script>
@@ -1266,10 +1255,36 @@
                     quoteEl.style.opacity = 1;
                 }, 600);
             });
+
+            // Sequential fade-in animation
+            function startFadeInSequence() {
+                const title = document.getElementById('title');
+                const button = document.getElementById('quoteBtn');
+                const musicBy = document.getElementById('musicBy');
+                const madeBy = document.getElementById('madeBy');
+
+                // Show title first
+                setTimeout(() => {
+                    title.classList.add('show');
+                }, 200);
+
+                // Show button after title
+                setTimeout(() => {
+                    button.classList.add('show');
+                }, 800);
+
+                // Show credits together
+                setTimeout(() => {
+                    musicBy.classList.add('show');
+                    madeBy.classList.add('show');
+                }, 1400);
+            }
+
+            // Start the sequence when page loads
+            startFadeInSequence();
+
         });
     </script>
-
-
 
     <script>
         // Create pixel stars
@@ -1292,6 +1307,8 @@
 
         window.addEventListener('load', createPixelStars);
     </script>
+
+
 </body>
 
 </html>
